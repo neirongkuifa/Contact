@@ -50,7 +50,6 @@ class ContactWrapperNavigator extends React.Component {
   }
   componentDidMount() {
     fetchUsers().then(result => {
-      console.log(result);
       this.setState({
         contacts: result
       });

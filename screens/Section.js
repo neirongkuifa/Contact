@@ -82,6 +82,7 @@ export default class Section extends React.PureComponent {
         <SectionList
           renderItem={this.renderItem}
           renderSectionHeader={this.renderSectionHeader}
+          keyExtractor={(item, index) => index}
           sections={this.sectionize(this.props.screenProps.contacts)}
         />
       </View>

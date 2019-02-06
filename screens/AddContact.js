@@ -80,7 +80,7 @@ export default class AddContact extends React.Component {
           placeholder="Enter Name"
           value={this.state.name}
           onChangeText={this.handleName}
-        />{" "}
+        />
         <TextInput
           style={styles.input}
           placeholder="Enter Phone"
@@ -99,7 +99,7 @@ export default class AddContact extends React.Component {
             });
             this.props.navigation.goBack();
           }}
-        />{" "}
+        />
       </KeyboardAvoidingView>
     );
   }
