@@ -1,8 +1,8 @@
 # React Native Test App - A simple Contact
 - Libraries used
 
-  * Expo. 
+ - Expo. 
 
-  * React Navigation. 
+ - React Navigation. 
 
-  - React Redux. 
+ - React Redux. 
