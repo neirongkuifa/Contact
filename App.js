@@ -23,6 +23,8 @@ import RecentContact from "./screens/RecentContacts";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { fetchUsers } from "./api.js";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
 const ContactNavigator = createStackNavigator(
   {
@@ -41,13 +43,7 @@ class ContactWrapperNavigator extends React.Component {
       <Ionicons name={`ios-contacts`} size={40} color={tintColor} />
     )
   };
-  constructor(props) {
-    super(props);
-    this.state = {
-      contacts: []
-    };
-    this.addContact = this.addContact.bind(this);
-  }
+
   componentDidMount() {
     fetchUsers().then(result => {
       this.setState({
@@ -55,24 +51,10 @@ class ContactWrapperNavigator extends React.Component {
       });
     });
   }
-  addContact(contact) {
-    Keyboard.dismiss();
-    this.setState({
-      contacts: [...this.state.contacts, contact]
-    });
-  }
+
   render() {
     const { navigation } = this.props;
-    return (
-      <ContactNavigator
-        navigation={navigation}
-        screenProps={{
-          contacts: this.state.contacts,
-          handleAddContact: this.addContact,
-          handleAddRecent: this.addRecent
-        }}
-      />
-    );
+    return <ContactNavigator navigation={navigation} />;
   }
 }
 const RecentNavigator = createStackNavigator(
@@ -113,4 +95,12 @@ const AppNavigator = createSwitchNavigator(
 
 const AppContainer = createAppContainer(AppNavigator);
 
-export default AppContainer;
+export default class App extends React.Component {
+  render() {
+    return (
+      <Provider store={store}>
+        <AppContainer />
+      </Provider>
+    );
+  }
+}

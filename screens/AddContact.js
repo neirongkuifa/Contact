@@ -1,4 +1,6 @@
 import React from "react";
+import store from "../redux/store";
+import { addContact, addRecent } from "../redux/actions";
 import {
   TextInput,
   View,
@@ -29,7 +31,7 @@ export default class AddContact extends React.Component {
     };
     this.handleName = this.handleName.bind(this);
     this.handlePhone = this.handlePhone.bind(this);
-    this.id = 101;
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
   componentDidUpdate(prevProps, prevState) {
     const names = this.state.name.split(" ");
@@ -66,6 +68,17 @@ export default class AddContact extends React.Component {
       });
     }
   }
+  handleSubmit() {
+    const phone = this.state.phone;
+    const contact = {
+      key: store.getState().contacts.length,
+      name: this.state.name,
+      phone: `${phone.slice(0, 3)}-${phone.slice(3, 6)}-${phone.slice(6)}`
+    };
+    store.dispatch(addContact(contact));
+    store.dispatch(addRecent(contact));
+    this.props.navigation.goBack();
+  }
   render() {
     return (
       <KeyboardAvoidingView
@@ -91,14 +104,7 @@ export default class AddContact extends React.Component {
         <Button
           title="Add Contact"
           disabled={!this.state.isFormValid}
-          onPress={() => {
-            this.props.screenProps.handleAddContact({
-              key: this.id++,
-              name: this.state.name,
-              phone: this.state.phone
-            });
-            this.props.navigation.goBack();
-          }}
+          onPress={this.handleSubmit}
         />
       </KeyboardAvoidingView>
     );
