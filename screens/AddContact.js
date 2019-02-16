@@ -1,6 +1,6 @@
-import React from "react";
-import store from "../redux/store";
-import { addContact, addRecent } from "../redux/actions";
+import React from 'react'
+import { connect } from 'react-redux'
+import { addContact, addRecent } from '../redux/actions'
 import {
   TextInput,
   View,
@@ -8,33 +8,33 @@ import {
   Button,
   StyleSheet,
   KeyboardAvoidingView
-} from "react-native";
+} from 'react-native'
 
-export default class AddContact extends React.Component {
+class AddContact extends React.Component {
   static navigationOptions = navigation => ({
-    headerTitle: "Adding Contact",
-    headerTintColor: "#D7B740",
+    headerTitle: 'Adding Contact',
+    headerTintColor: '#D7B740',
     headerStyle: {
-      backgroundColor: "#7F0010"
+      backgroundColor: '#7F0010'
     },
     headerTitleStyle: {
       fontSize: 20,
-      fontWeight: "bold"
+      fontWeight: 'bold'
     }
-  });
+  })
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      name: "",
-      phone: "",
+      name: '',
+      phone: '',
       isFormValid: false
-    };
-    this.handleName = this.handleName.bind(this);
-    this.handlePhone = this.handlePhone.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    }
+    this.handleName = this.handleName.bind(this)
+    this.handlePhone = this.handlePhone.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
   componentDidUpdate(prevProps, prevState) {
-    const names = this.state.name.split(" ");
+    const names = this.state.name.split(' ')
     if (
       prevState.name !== this.state.name ||
       prevState.phone !== this.state.phone
@@ -48,36 +48,37 @@ export default class AddContact extends React.Component {
       ) {
         this.setState({
           isFormValid: true
-        });
+        })
       } else {
         this.setState({
           isFormValid: false
-        });
+        })
       }
     }
   }
   handleName(text) {
     this.setState({
       name: text
-    });
+    })
   }
   handlePhone(text) {
     if (!isNaN(text) && text.length <= 10) {
       this.setState({
         phone: text
-      });
+      })
     }
   }
   handleSubmit() {
-    const phone = this.state.phone;
+    const phone = this.state.phone
+    const key = this.props.nextId
     const contact = {
-      key: store.getState().contacts.length,
+      key,
       name: this.state.name,
       phone: `${phone.slice(0, 3)}-${phone.slice(3, 6)}-${phone.slice(6)}`
-    };
-    store.dispatch(addContact(contact));
-    store.dispatch(addRecent(contact));
-    this.props.navigation.goBack();
+    }
+    this.props.addContact(contact)
+    this.props.addRecent(contact)
+    this.props.navigation.goBack()
   }
   render() {
     return (
@@ -85,7 +86,7 @@ export default class AddContact extends React.Component {
         behavior="padding"
         style={{
           flex: 1,
-          justifyContent: "flex-start",
+          justifyContent: 'flex-start',
           paddingTop: 30
         }}>
         <TextInput
@@ -107,7 +108,7 @@ export default class AddContact extends React.Component {
           onPress={this.handleSubmit}
         />
       </KeyboardAvoidingView>
-    );
+    )
   }
 }
 
@@ -116,7 +117,16 @@ const styles = StyleSheet.create({
     height: 35,
     fontSize: 20,
     margin: 15,
-    borderColor: "black",
+    borderColor: 'black',
     borderWidth: 1
   }
-});
+})
+const mapState = state => ({ nextId: state.contacts.length })
+const mapDispatch = {
+  addContact,
+  addRecent
+}
+export default connect(
+  mapState,
+  mapDispatch
+)(AddContact)

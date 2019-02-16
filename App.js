@@ -7,24 +7,24 @@
  * @lint-ignore-every XPLATJSCOPYRIGHT1
  */
 
-import React from "react";
-import { Keyboard } from "react-native";
+import React from 'react'
+import { Keyboard } from 'react-native'
 import {
   createSwitchNavigator,
   createAppContainer,
   createStackNavigator,
   createBottomTabNavigator
-} from "react-navigation";
-import AddContact from "./screens/AddContact";
-import Section from "./screens/Section";
-import ContactDetails from "./screens/ContactDetails";
-import Login from "./screens/Login";
-import RecentContact from "./screens/RecentContacts";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { fetchUsers } from "./api.js";
-import { Provider } from "react-redux";
-import store from "./redux/store";
+} from 'react-navigation'
+import AddContact from './screens/AddContact'
+import Section from './screens/Section'
+import ContactDetails from './screens/ContactDetails'
+import Login from './screens/Login'
+import RecentContact from './screens/RecentContacts'
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import { fetchUsers } from './api.js'
+import { Provider } from 'react-redux'
+import store from './redux/store'
 
 const ContactNavigator = createStackNavigator(
   {
@@ -33,28 +33,28 @@ const ContactNavigator = createStackNavigator(
     ContactDetailsScreen: ContactDetails
   },
   {
-    initialRouteName: "SectionScreen"
+    initialRouteName: 'SectionScreen'
   }
-);
+)
 class ContactWrapperNavigator extends React.Component {
-  static router = ContactNavigator.router;
+  static router = ContactNavigator.router
   static navigationOptions = {
     tabBarIcon: ({ focused, tintColor }) => (
       <Ionicons name={`ios-contacts`} size={40} color={tintColor} />
     )
-  };
+  }
 
   componentDidMount() {
     fetchUsers().then(result => {
       this.setState({
         contacts: result
-      });
-    });
+      })
+    })
   }
 
   render() {
-    const { navigation } = this.props;
-    return <ContactNavigator navigation={navigation} />;
+    const { navigation } = this.props
+    return <ContactNavigator navigation={navigation} />
   }
 }
 const RecentNavigator = createStackNavigator(
@@ -69,7 +69,7 @@ const RecentNavigator = createStackNavigator(
       )
     }
   }
-);
+)
 
 const MainNavigator = createBottomTabNavigator(
   {
@@ -78,22 +78,22 @@ const MainNavigator = createBottomTabNavigator(
   },
   {
     tabBarOptions: {
-      activeTintColor: "#D7B740",
+      activeTintColor: '#D7B740',
       showLabel: false
     }
   }
-);
+)
 const AppNavigator = createSwitchNavigator(
   {
     LoginScreen: Login,
     MainScreen: MainNavigator
   },
   {
-    initialRouteName: "LoginScreen"
+    initialRouteName: 'LoginScreen'
   }
-);
+)
 
-const AppContainer = createAppContainer(AppNavigator);
+const AppContainer = createAppContainer(AppNavigator)
 
 export default class App extends React.Component {
   render() {
@@ -101,6 +101,6 @@ export default class App extends React.Component {
       <Provider store={store}>
         <AppContainer />
       </Provider>
-    );
+    )
   }
 }

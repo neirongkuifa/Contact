@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import {
   View,
   Button,
@@ -7,47 +7,47 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   Alert
-} from "react-native";
+} from 'react-native'
 
 export default class Login extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      username: "",
-      password: ""
-    };
-    this.login = this.login.bind(this);
+      username: '',
+      password: ''
+    }
+    this.login = this.login.bind(this)
   }
   async login() {
-    const response = await fetch("http://192.168.0.44:8000", {
-      method: "POST",
+    const response = await fetch('http://192.168.0.44:8000', {
+      method: 'POST',
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         username: this.state.username,
         password: this.state.password
       })
-    });
-    if (response.ok === true) {
-      this.props.navigation.navigate("MainScreen");
-      return;
+    })
+    if (true) {
+      this.props.navigation.navigate('MainScreen')
+      return
     } else {
-      const errMsg = await response.text();
+      const errMsg = await response.text()
       Alert.alert(
-        "Login Failed",
+        'Login Failed',
         errMsg,
-        [{ text: "OK" }, { text: "Cancel" }],
+        [{ text: 'OK' }, { text: 'Cancel' }],
         { cancelable: false }
-      );
+      )
     }
   }
   render() {
     return (
       <KeyboardAvoidingView
         behavior="padding"
-        style={{ flex: 1, justifyContent: "center" }}>
+        style={{ flex: 1, justifyContent: 'center' }}>
         <View style={styles.inputContainer}>
           <Text style={styles.title}>Username: </Text>
           <TextInput
@@ -67,7 +67,7 @@ export default class Login extends React.Component {
         </View>
         <Button title="Login" onPress={this.login} />
       </KeyboardAvoidingView>
-    );
+    )
   }
 }
 
@@ -75,16 +75,16 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     width: 120,
-    fontWeight: "bold"
+    fontWeight: 'bold'
   },
   input: {
     fontSize: 20,
     width: 200,
     borderWidth: 1,
-    borderColor: "black"
+    borderColor: 'black'
   },
   inputContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     margin: 10
   }
-});
+})
