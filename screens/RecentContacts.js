@@ -50,5 +50,8 @@ class RecentContacts extends React.PureComponent {
   }
 }
 
-const mapStateToProps = state => ({ recent: state.recent })
+const mapStateToProps = state => ({
+  recent: state.recent,
+  contacts: state.contacts
+})
 export default connect(mapStateToProps)(RecentContacts)

@@ -5,6 +5,10 @@ export const MODIFY_CONTACT = 'MODIFY_CONTACT'
 export const ADD_USER = 'ADD_USER '
 export const DEL_USER = 'DEL_USER '
 export const MODIFY_USER = 'MODIFY_USER'
+export const LOGIN_START = 'LOGIN_START'
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
+export const LOGIN_FAILED = 'LOGIN_FAILED'
+export const LOGOUT_USER = 'LOGOUT_USER'
 
 export const ADD_RECENT = 'ADD_RECENT'
 
@@ -14,6 +18,29 @@ export const ADD_RECENT = 'ADD_RECENT'
 //Of course you can use action object directly if you wish
 export const addContact = contact => ({ type: ADD_CONTACT, payload: contact })
 
-export const addUser = user => ({ type: ADD_USER, payload: user })
-
 export const addRecent = contact => ({ type: ADD_RECENT, payload: contact })
+
+export const loginUser = (username, password) => (dispatch, getState) => {
+  dispatch({ type: LOGIN_START })
+  fetch('http://192.168.0.44:8000', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      username,
+      password
+    })
+  }).then(response => {
+    if (response['ok'] === true) {
+      dispatch({ type: LOGIN_SUCCESS })
+    } else {
+      dispatch({ type: LOGIN_FAILED })
+    }
+  })
+}
+
+export const logoutUser = () => (dispatch, getState) => {
+  dispatch({ type: LOGOUT_USER })
+}

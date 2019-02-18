@@ -13,7 +13,6 @@ class Section extends React.Component {
     headerRight: (
       <TouchableOpacity
         onPress={() => {
-          console.log(Object.keys(this))
           navigation.navigate('AddContactScreen')
         }}>
         <Text

@@ -8,11 +8,19 @@ const contactReducer = (state = [], action) => {
   return state
 }
 
-const userReducer = (state = [], action) => {
-  if (action.type === Action.ADD_USER) {
-    return [...state, action.payload]
+const userReducer = (state = false, action) => {
+  switch (action.type) {
+    case Action.LOGIN_START:
+      return state
+    case Action.LOGIN_SUCCESS:
+      return true
+    case Action.LOGIN_FAILED:
+      return false
+    case Action.LOGOUT_USER:
+      return false
+    default:
+      return state
   }
-  return state
 }
 
 const recentReducer = (state = [], action) => {
@@ -26,7 +34,7 @@ const recentReducer = (state = [], action) => {
 }
 
 const reducer = combineReducers({
-  users: userReducer,
+  loginStatus: userReducer,
   contacts: contactReducer,
   recent: recentReducer
 })

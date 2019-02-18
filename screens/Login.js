@@ -8,8 +8,10 @@ import {
   KeyboardAvoidingView,
   Alert
 } from 'react-native'
+import { loginUser } from '../redux/actions'
+import { connect } from 'react-redux'
 
-export default class Login extends React.Component {
+class Login extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -30,7 +32,7 @@ export default class Login extends React.Component {
         password: this.state.password
       })
     })
-    if (true) {
+    if (response.status === true) {
       this.props.navigation.navigate('MainScreen')
       return
     } else {
@@ -42,6 +44,12 @@ export default class Login extends React.Component {
         { cancelable: false }
       )
     }
+  }
+  static getDerivedStateFromProps(props, state) {
+    if (props.loginStatus === true) {
+      props.navigation.navigate('MainScreen')
+    }
+    return null
   }
   render() {
     return (
@@ -65,7 +73,12 @@ export default class Login extends React.Component {
             secureTextEntry={true}
           />
         </View>
-        <Button title="Login" onPress={this.login} />
+        <Button
+          title="Login"
+          onPress={() =>
+            this.props.loginUser(this.state.username, this.state.password)
+          }
+        />
       </KeyboardAvoidingView>
     )
   }
@@ -88,3 +101,10 @@ const styles = StyleSheet.create({
     margin: 10
   }
 })
+
+export default connect(
+  state => ({
+    loginStatus: state.loginStatus
+  }),
+  { loginUser }
+)(Login)

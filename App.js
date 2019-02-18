@@ -8,7 +8,7 @@
  */
 
 import React from 'react'
-import { Keyboard } from 'react-native'
+import { AppState } from 'react-native'
 import {
   createSwitchNavigator,
   createAppContainer,
@@ -23,8 +23,10 @@ import RecentContact from './screens/RecentContacts'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { fetchUsers } from './api.js'
-import { Provider } from 'react-redux'
-import store from './redux/store'
+import { Provider, connect } from 'react-redux'
+import { store, persistor } from './redux/store'
+import { PersistGate } from 'redux-persist/integration/react'
+import { logoutUser } from './redux/actions'
 
 const ContactNavigator = createStackNavigator(
   {
@@ -96,10 +98,23 @@ const AppNavigator = createSwitchNavigator(
 const AppContainer = createAppContainer(AppNavigator)
 
 export default class App extends React.Component {
+  componentDidMount() {
+    AppState.addEventListener('change', this.handleAppStateChange)
+  }
+  componentWillUnmount() {
+    AppState.removeEventListener('change', this.handleAppStateChange)
+  }
+  handleAppStateChange = nextAppState => {
+    if ((nextAppState === 'inactive') | 'background') {
+      store.dispatch(logoutUser())
+    }
+  }
   render() {
     return (
       <Provider store={store}>
-        <AppContainer />
+        <PersistGate loading={null} persistor={persistor}>
+          <AppContainer />
+        </PersistGate>
       </Provider>
     )
   }
