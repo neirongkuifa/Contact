@@ -1,3 +1,4 @@
+import fetch from 'cross-fetch'
 export const ADD_CONTACT = 'ADD_CONTACT'
 export const DEL_CONTACT = 'DEL_CONTACT'
 export const MODIFY_CONTACT = 'MODIFY_CONTACT'
